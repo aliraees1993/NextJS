@@ -1,0 +1,124 @@
+What is Next.js?
+----------------
+- It is a framework built on top of react that gives the flexibility of building scalable apps by allowing you to render content on the server in advance
+- It is a full stack framework. We wont be building only the frontend of the application but also the backend as Next.js provides node server out of the box
+
+Benefits of Next.js
+-------------------
+- Different Rendering Techniques
+    -- Static Site Generation - All the content gets pre-built on the server and passed onto the client and is also cached. So the client is basically fetching the cached content over and over again which gives a huge performance boost e.g. Products, blog posts etc
+    -- Server Side Generation - Generate the page on the server if we want data on page refresh e.g. Dynamic News Feed
+    -- Incremental Site Regeneration - Generate page in advance as part of the build process, but you are also able to fetch new data just like in server side rendering e.g static + server
+
+- Performance
+    -- Code Splitting - Divide web app in small chunks so you can only load the chunk that is used by the current page 
+    -- Minifying Files - Getting rid of special characters and white spaces to make the file size tiny, so we dont have to use webpack
+    -- Image Optimization - NextImage component automatically optimizes images based on window size
+    -- Pre-fetching Assets - Next.js will only pre-fetch assets as we scroll down the page
+
+- File Based Routing
+    -- Like rect we dont need react router e.g.
+        demo-app/pages/api/hello.js will automatically route to demo.com/api/hello
+        demo-app/pages/index.js will automatically route to demo.com/
+
+- Search Engine Optimization - Next.js provides us with a NextHead component to make SEO better
+
+- Serverless Functions
+    -- Anything under the /pages/api/ folder has a node server configured already out of the box.
+    -- We call it a serverless function because the server only runs when we want to perform a specific task, if there is no activity the server shutsdown
+
+- Fast Refresh - Fast refresh applies our changes right away without us reloading the page. Next.js provides fast refresh out of the box.
+
+What is SEO
+-----------
+- SEO is a basically language for the bots. Bots crawls our page, tries to understand what the page is about using meta data, ranks our page and based on rank displays our page on google
+- To have a better SEO we have to use
+    -- Semantics
+        --- using a <p> tag for text
+        --- using correct heaings i.e. h1, h2 etc
+        --- using <a> anchor when its a link
+    -- Meta tags - title and description for meta tags
+    -- Image alt tag - alt tag in image
+
+Next.js Commands
+----------------
+- npx create-next-app - Create next app
+- npm run dev | yarn dev - Starts the development server
+- npm run build | yarn build - Builds the app for production
+- npm start | yarn start - Starts the built app in production mode
+
+Upgrading Next.js
+-----------------
+We can follow the docs here to upgrade our Next.js application: https://nextjs.org/docs/upgrading
+
+Create-next-app Structure
+-------------------------
+- package.json - Scripts and dependencies
+- node_modules - All dependencies
+- pages - Default Routing
+    -- api - Backend API's
+        --- hello.js - localhost:3000/api/hello
+    -- _app.js - Entry point i.e. it gets initialized once but is available througout the application. A common use-case will be including footer. We include footer only once but will be displayed on every page. 
+    -- index.js - Default route localhost:3000/
+- public - All static assets
+- styles
+    -- globals.css - Styles that will be applied thoughout your application
+    -- Home.module.css - It is a CSS module i.e. Home.module.css will be associated with Home component
+- .next - Gets Auto generated
+
+CSS Modules
+-----------
+- Any file that has a suffix .module.css is a css module.
+- The benefit of using this is any css code written in Hello.module.css is scoped to Hello component.
+- We can import it in the component as import styles from "../styles/hello.module.css".
+- styles is an object so we can access the css class as styles.className and it will have a value which is dynamically generated
+- Another benefit is that we can use same class names in different modules but the styles will only impact the specific component. Css modules dynamically generate unique class names
+
+Next.js Routing
+---------------
+- Types of Routing
+    -- Index routes - Default root page route e.g. localhost:3000/
+    -- Nested routes - Nested files e.g. localhost:3000/coffee-store
+    -- Dynamic routes - Define brackets e.g. localhost:3000/coffee-store/[id]
+
+- Two Rules of Routing
+    -- Page needs to be a react component
+    -- Component needs to be exported by default
+
+Next.js Document
+----------------
+- _app.js is only responsible for body and routing of the pages but it doesn necessiraly have to do anything with html nad head tags
+- so we create _document.js in pages/ to manipulate head or body
+- We have to create a class not a fucntion based component
+- import Document from "next/document";
+
+getStaticProps
+--------------
+If you export a function called getStaticProps (Static Site Generation) from a page, Next.js will pre-render this page at build time using the props returned by getStaticProps. It has the following rules
+    -- Can only be exported from a page file
+    -- Meant for all routes
+
+getStaticPaths
+--------------
+- If a page has Dynamic Routes and uses getStaticProps, it needs to define a list of paths to be statically generated. It has the following Rules
+    -- Can only be exported from a page file
+    -- Meant for dynamic routes
+    -- Page must also implement getStaticProps
+- If fallback is false - If path exist in getStaticPaths the page will be displayed else 404 page will be displayed
+- If fallback is true - If path exists in getStaticPaths the page will be displayed, else with router.fallback it is going to return a loading state. If the data exists it will render the page else it will give an error
+
+Rules of API routes
+-------------------
+- File needs to be a function
+- Function needs to be exported by default
+- Every function should be its own file
+
+Catch all Routes
+----------------
+- If we dont know the possible routes we can use catch all routes using 3 dots e.g pages/api/cafes/[...slug].js
+- If a specific route is available it takes precedence over catch all routes
+
+SWR
+----
+- SWR - Stale while revalidate
+- SWR is a strategy to first return the data from cache (stale), then send the fetch request (revalidate), and finally come up with up-to-data data
