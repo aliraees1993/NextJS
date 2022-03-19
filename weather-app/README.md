@@ -1,1 +1,1 @@
-# Weather App built using Next.js
+# Weather App

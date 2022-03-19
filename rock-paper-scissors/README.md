@@ -1,1 +1,1 @@
-# Rock Paper Scissors Game built using Next.js
+# Rock Paper Scissors Game built using sass
